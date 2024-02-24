@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD PHP MVC</title>
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/4230aeea9b.js" crossorigin="anonymous"></script>
-
-    <style>
-        th {
-            background: transparent;
-        }
-    </style>
 </head>
 <body>
-	<h1 class="text-center p-3">Hola Mundo</h1>  
+    <script>
+        function mensaje(){
+            var respuesta = confirm("¿Estas seguro que deseas eliminar el registro?");
+            return respuesta
+        }
+    </script>
+	<h1 class="text-center p-3">Actividad 1</h1>  
     
     <div class="container-fluid row">
-        <form class="col-4 p-3">
+        <form class="col-4 p-3" method="POST">
             <h3 class="text-center text-secondary">Registro de Persona</h3>
+            <?php
+                include "modelo/conexion.php";
+                include "controlador/registro_persona.php";
+                include "controlador/eliminar_persona.php";
+
+            ?>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label"> Nombre</label>
                 <input type="text" class="form-control" name="nombre">
@@ -34,14 +41,16 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label"> Fecha de Nacimiento</label>
-                <input type="text" class="form-control" name="f_nac">
+                <input type="date" class="form-control" name="f_nac">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label"> Correo </label>
                 <input type="email" class="form-control" name="correo">
             </div>
 
-            <button type="submit" class="btn btn-primary" name="btnregistrar">Registrar</button>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button type="submit" class="btn btn-primary" name="btnregistrar" value="ok">Registrar</button>
+            </div>
 
         </form>
 
@@ -60,7 +69,6 @@
                 </thead>
                 <tbody>
                     <?php
-                        include "modelo/conexion.php";
                         $sql=$conexion->query(" select * from persona");
                         while($datos=$sql->fetch_object()){?>
                             
@@ -73,8 +81,8 @@
                                 <td><?= $datos->correo; ?></td>   
                                 <td>
 
-                            <a href="" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square" style="color: #ffff;"></i></a>
-                            <a href="" class="btn btn-small btn-danger"><i class="fa-solid fa-trash-can" style="color: #ffff;"></i></a>
+                            <a href="modifcar.php?id=<?= $datos->id_persona; ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square" style="color: #ffff;"></i></a>
+                            <a onclick="return mensaje();" href="index.php?id=<?= $datos->id_persona; ?>" class="btn btn-small btn-danger" name="btneliminar"><i class="fa-solid fa-trash-can" style="color: #ffff;"></i></a>
                         </td>   
                     </tr>
                     <?php    
